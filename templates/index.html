@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Skill Gap Detector</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-10">
+
+    <div class="max-w-6xl mx-auto">
+
+        <h1 class="text-4xl font-bold text-center mb-10">
+            AI Career Copilot
+        </h1>
+
+        <div class="grid grid-cols-2 gap-8">
+
+            <!-- LEFT PANEL -->
+
+            <div class="bg-white p-6 rounded-xl shadow">
+
+                <h2 class="text-xl font-bold mb-4">
+                    Upload Resume
+                </h2>
+
+                <input
+                    type="file"
+                    id="resume"
+                    class="mb-4"
+                >
+
+                <select
+                    id="role"
+                    class="border p-2 w-full mb-4"
+                >
+                    <option>AI Engineer</option>
+                    <option>Data Scientist</option>
+                    <option>Full Stack Developer</option>
+                    <option>Cloud Engineer</option>
+                </select>
+
+                <button
+                    onclick="analyzeResume()"
+                    class="bg-blue-600 text-white px-5 py-2 rounded"
+                >
+                    Analyze Resume
+                </button>
+
+            </div>
+
+            <!-- RIGHT PANEL -->
+
+            <div
+                id="results"
+                class="bg-white p-6 rounded-xl shadow"
+            >
+                <h2 class="text-xl font-bold">
+                    Results will appear here
+                </h2>
+            </div>
+
+        </div>
+
+    </div>
+
+<script>
+
+async function analyzeResume() {
+
+    const fileInput =
+        document.getElementById("resume")
+
+    const role =
+        document.getElementById("role").value
+
+    const file =
+        fileInput.files[0]
+
+    if (!file) {
+        alert("Upload a resume first")
+        return
+    }
+
+    const formData = new FormData()
+
+    formData.append("file", file)
+    formData.append("target_role", role)
+
+    const response = await fetch(
+        "/analyze",
+        {
+            method: "POST",
+            body: formData
+        }
+    )
+
+    const data = await response.json()
+
+    renderResults(data)
+}
+
+function renderResults(data) {
+
+    document.getElementById("results").innerHTML = `
+    
+        <h2 class="text-2xl font-bold mb-4">
+            ${data.target_role}
+        </h2>
+
+        <div class="mb-4">
+            <h3 class="font-bold">
+                Readiness Score
+            </h3>
+
+            <p class="text-3xl text-green-600">
+                ${data.gap_analysis.score}%
+            </p>
+        </div>
+
+        <div class="mb-4">
+
+            <h3 class="font-bold">
+                Missing Skills
+            </h3>
+
+            <ul>
+                ${data.gap_analysis.missing
+                    .map(skill => `<li>❌ ${skill}</li>`)
+                    .join("")}
+            </ul>
+
+        </div>
+
+        <div>
+
+            <h3 class="font-bold mb-2">
+                AI Roadmap
+            </h3>
+
+            <pre class="whitespace-pre-wrap text-sm">
+${data.roadmap}
+            </pre>
+
+        </div>
+
+    `
+}
+
+</script>
+
+</body>
+</html>
