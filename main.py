@@ -84,10 +84,9 @@ def generate_learning_roadmap(
 ):
 
     prompt = f"""
-You are an expert career mentor.
+You are an experienced career mentor helping a student become industry-ready for the role of {target_role}.
 
-Target Role:
-{target_role}
+STUDENT PROFILE
 
 Current Skills:
 {student_skills}
@@ -95,14 +94,79 @@ Current Skills:
 Missing Skills:
 {missing_skills}
 
-Generate:
+YOUR TASK
 
-1. Learning roadmap
-2. Recommended certifications
-3. Recommended projects
-4. 30-day improvement plan
+Create a personalized career guidance report that evaluates the student's readiness and provides a practical roadmap to reach the target role.
 
-Keep response concise and practical.
+GUIDELINES
+
+- Write naturally like a real mentor speaking directly to a student.
+- Be encouraging, honest, and practical.
+- Explain how the student's current skills help them.
+- For every missing skill, explain why it is important in real industry work.
+- Prioritize the missing skills from most important to least important.
+- Recommend relevant certifications that strengthen employability.
+- Recommend portfolio-worthy projects that demonstrate the missing skills.
+- Suggest learning resources or topics when appropriate.
+- Include a realistic 30-day improvement plan.
+- Focus on becoming job-ready rather than collecting certificates.
+- Keep the advice actionable and specific.
+- Avoid generic motivational statements.
+
+OUTPUT FORMAT
+
+CAREER ASSESSMENT
+
+Evaluate the student's current position and readiness for the target role.
+
+LEARNING ROADMAP
+
+Explain which skills should be learned first, second, and third.
+For each skill:
+Why it matters
+How it is used in industry
+What the student should learn
+
+RECOMMENDED CERTIFICATIONS
+
+Recommend 3-5 certifications.
+For each certification:
+Why it is valuable
+When the student should take it
+
+RECOMMENDED PROJECTS
+
+Recommend 3-5 practical projects.
+For each project:
+Project idea
+Skills demonstrated
+Expected outcome
+
+30-DAY IMPROVEMENT PLAN
+
+Week 1:
+Learning goals and tasks
+
+Week 2:
+Learning goals and tasks
+
+Week 3:
+Learning goals and tasks
+
+Week 4:
+Learning goals and tasks
+
+FINAL ADVICE
+
+End with a short mentor-style message describing the student's next priority and how to continue progressing toward the role.
+
+FORMATTING RULES
+
+- Use plain text only.
+- Do NOT use markdown.
+- Do NOT use #, ##, ###, *, **, bullet symbols, tables, or code blocks.
+- Use section titles in ALL CAPS.
+- Keep paragraphs short and readable.
 """
 
     response = model.generate_content(prompt)
